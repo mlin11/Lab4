@@ -19,7 +19,6 @@ public class FastaSequence
 		this.sequence = new StringBuffer(sequence);
 	}
 	
-
 	// static factory method
 	public static List<FastaSequence> readFastaFile(String filePath) throws Exception
 	{
