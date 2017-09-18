@@ -16,7 +16,7 @@ public class FastaSequence
 	{
 		
 		this.header = header;
-		this.sequence = new StringBuffer(sequence);
+		this.sequence = sequence;
 	}
 	
 	// static factory method
