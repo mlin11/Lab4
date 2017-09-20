@@ -39,6 +39,8 @@ public class FastaSequence
 			
 		}else
 		{
+			//to avoid memory leak
+			reader.close();
 			throw new Exception("Please make sure this is a fasta file!");
 		}
 		
