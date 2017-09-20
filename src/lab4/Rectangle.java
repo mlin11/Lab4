@@ -1,5 +1,6 @@
 package lab4;
 
+
 public class Rectangle
 {
 	public final double width;
