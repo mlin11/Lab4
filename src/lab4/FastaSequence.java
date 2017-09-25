@@ -6,19 +6,22 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FastaSequence {
+public class FastaSequence
+{
 	private String header;
-	private StringBuffer sequence = new StringBuffer();
+	private String sequence;
 
 	// constructor
-	public FastaSequence(String header, StringBuffer sequence) {
+	public FastaSequence(String header, String sequence)
+	{
 
 		this.header = header;
 		this.sequence = sequence;
 	}
 
 	// static factory method
-	public static List<FastaSequence> readFastaFile(String filePath) throws Exception {
+	public static List<FastaSequence> readFastaFile(String filePath) throws Exception
+	{
 		// generate a list to store header/sequence
 		List<FastaSequence> list = new ArrayList<FastaSequence>();
 		// read fasta file
@@ -28,39 +31,44 @@ public class FastaSequence {
 		// read the first line
 		String firstLine = reader.readLine();
 		String header;
-		StringBuffer sequence = new StringBuffer();
+		StringBuffer sequenceb = new StringBuffer();
 
-		if (firstLine.startsWith(">")) {
-			header = firstLine.substring(1);
+		if (firstLine.startsWith(">"))
+		{
+			header = firstLine.substring(1).trim();
 
-		} else {
+		} else
+		{
 			// to avoid memory leak
 			reader.close();
 			throw new Exception("Please make sure this is a fasta file!");
 		}
 
-		for (String nextLine = reader.readLine(); nextLine != null; nextLine = reader.readLine()) {
+		for (String nextLine = reader.readLine(); nextLine != null; nextLine = reader.readLine())
+		{
 			// read from the second line
 			// the program will implement else statement first
 
-			if (nextLine.startsWith(">")) {
+			if (nextLine.startsWith(">"))
+			{
 				// whenever reaches a new header, save the previous header/sequence
-				FastaSequence pair = new FastaSequence(header, sequence);
+				FastaSequence pair = new FastaSequence(header, sequenceb.toString());
 				list.add(pair);
 				// update the header with new header
-				header = nextLine.substring(1);
+				header = nextLine.substring(1).trim();
 				// empty the sequence stringBuffer
-				sequence.setLength(0);
+				sequenceb.setLength(0);
 
-			} else {
+			} else
+			{
 				// save 1-many lines of sequence into the stringBuffer
-				sequence.append(nextLine.trim());
+				sequenceb.append(nextLine.trim());
 
 			}
 
 		}
 		// generate a new FastaSequence to store the last header/sequence
-		list.add(new FastaSequence(header, sequence));
+		list.add(new FastaSequence(header, sequenceb.toString()));
 		// close the reader
 		reader.close();
 		// return the list
@@ -69,22 +77,26 @@ public class FastaSequence {
 	}
 
 	// returns the header of this sequence without the “>”
-	public String getHeader() {
+	public String getHeader()
+	{
 		return header;
 	}
 
 	// returns the DNA sequence of this FastaSequence
-	public String getSequence() {
-		return sequence.toString();
+	public String getSequence()
+	{
+		return sequence;
 	}
 
 	// returns the number of G’s and C’s divided by the length of this sequence
-	public float getGCRatio() {
+	public float getGCRatio()
+	{
 		int countGC = 0;
 
 		String currentSequence = this.getSequence().toUpperCase();
 
-		for (int x = 0; x < currentSequence.length(); x++) {
+		for (int x = 0; x < currentSequence.length(); x++)
+		{
 			char target = currentSequence.charAt(x);
 
 			if (target == 'C' || target == 'G')
@@ -94,14 +106,16 @@ public class FastaSequence {
 		return (float) countGC / currentSequence.length();
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception
+	{
 		// ask user for the absolute path of a fasta file
 		System.out.println("Please type the absolute path of your fasta file");
 		String filePath = System.console().readLine();
 
 		List<FastaSequence> fastaList = FastaSequence.readFastaFile(filePath);
 
-		for (FastaSequence fs : fastaList) {
+		for (FastaSequence fs : fastaList)
+		{
 			System.out.println(fs.getHeader());
 			System.out.println(fs.getSequence());
 			System.out.println(fs.getGCRatio());
